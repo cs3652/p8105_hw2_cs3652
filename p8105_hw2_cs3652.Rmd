@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "HW2_cs3652"
 output: github_document
 ---
 
@@ -11,4 +11,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
 
+```{r}
+library(tidyverse)
+```
+
+##Problem 1
+
+```{r}
+subway_data = read_csv(file = "./NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+subway_data = janitor::clean_names(subway_data)
+  select(subway_data, line, station_name, station_latitude, station_longitude, route1:route11, entry, vending, entrance_type, ada)
+  mutate(subway_data, 
+         entry = recode(entry, 'YES' = TRUE, 'NO' = FALSE)
+         )
+```
+
+retain station
 
