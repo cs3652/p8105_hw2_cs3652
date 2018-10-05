@@ -157,13 +157,25 @@ In this dataset, there are `r count(distinct(brfss_data, locationdesc))` unique 
 ```{r}
 brfss_data %>% 
   filter(year == "2002", !is.na(excellent)) %>% 
-  ggplot(aes(x = excellent)) + geom_histogram()
+  ggplot(aes(x = excellent)) + geom_histogram(binwidth = 0.5) +
+  labs(
+    title = "Excellent Responses Histogram",
+    x = "Excellent Response Values",
+    y = "Count"
+  ) +
+  ggthemes::theme_economist()
   ##creating histogram reflecting excellent response values in 2002
 ```
 
 ```{r}
 brfss_data %>% 
   filter(locationdesc == "NY - Queens County" | locationdesc == "NY - New York County") %>% 
-  ggplot(aes(x = year, y = excellent, color = locationdesc)) + geom_point()
+  ggplot(aes(x = year, y = excellent, color = locationdesc)) + geom_point() +
+  labs(
+    title = "Proportion of Excellent Responses in New York and Queens over Time",
+    x = "Year",
+    y = "Proportion of Excellent Responses"
+  ) +
+  ggthemes::theme_economist()
   ##creating a scatterplot showing proportion of excellent response values in New York County and Queens County in each year from 2002 to 2010
 ```
