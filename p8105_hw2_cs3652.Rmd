@@ -152,30 +152,18 @@ brfss_data %>%
   head(1)
 ```
 
-In this dataset, there are `r count(distinct(brfss_data, locationdesc))` unique locations. Additionally, all states are represented. I know this by counting the number of values for locationabbr (`r brfss_data %>% distinct(locationabbr) %>% count()`) 
-
-including Washington D.C. The state observed the most was `r brfss_data %>% count(locationabbr) %>% arrange(desc(n)) %>% select(locationabbr) %>% head(1)`. In 2002, the median of the "Excellent" response value was `r brfss_data %>% filter(year == "2002", !is.na(excellent)) %>% summarize(median(excellent))`.
-
-The following is a histogram of the excellent response values in 2002.
+In this dataset, there are `r count(distinct(brfss_data, locationdesc))` unique locations. Additionally, all states are represented. I know this by counting the number of values for locationabbr (`r brfss_data %>% distinct(locationabbr) %>% count()`), which includes the 50 states and Washington D.C. The most observed state was `r brfss_data %>% count(locationabbr) %>% arrange(desc(n)) %>% select(locationabbr) %>% head(1)`. The median of the "Excellent" response value was `r brfss_data %>% filter(year == "2002", !is.na(excellent)) %>% summarize(median(excellent))`, in 2002.
 
 ```{r}
 brfss_data %>% 
   filter(year == "2002", !is.na(excellent)) %>% 
   ggplot(aes(x = excellent)) + geom_histogram()
+  ##creating histogram reflecting excellent response values in 2002
 ```
-
-The following is a scatterplot of the proportion of Excellent response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010:
 
 ```{r}
 brfss_data %>% 
   filter(locationdesc == "NY - Queens County" | locationdesc == "NY - New York County") %>% 
   ggplot(aes(x = year, y = excellent, color = locationdesc)) + geom_point()
-
+  ##creating a scatterplot showing proportion of excellent response values in New York County and Queens County in each year from 2002 to 2010
 ```
-
-Problem 3
-
-Is every state represented? What state is observed the most?
-    In 2002, what is the median of the “Excellent” response value?
-    Make a histogram of “Excellent” response values in the year 2002.
-    Make a scatterplot showing the proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010.
