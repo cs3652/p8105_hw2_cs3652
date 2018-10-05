@@ -59,7 +59,7 @@ There are `r nrow(filter(distinct(subway_data_tidy, line, station_name, route), 
 
 ##Problem 2
 
-```{r}
+```{r, message = FALSE}
 trashwheel_data = readxl::read_excel("./HealthyHarborWaterWheelTotals2018-7-28.xlsx", "Mr. Trash Wheel", range = cellranger::cell_cols("A:N")) %>% 
   ##Reading in data from excel sheet using a specific sheet and cell range
   janitor::clean_names() %>% 
@@ -76,7 +76,7 @@ trashwheel_data %>%
 
 The Mr. Trash Wheel dataset has `r nrow(trashwheel_data)` observations. In 2016, the median number of sports balls in the trash was `r trashwheel_data %>% filter(year == "2016") %>% summarise(median(sports_balls))`.
 
-```{r}
+```{r, message = FALSE}
 precipitation16_data = readxl::read_excel("./HealthyHarborWaterWheelTotals2018-7-28.xlsx", "2016 Precipitation", range = cellranger::cell_cols("A:B")) %>% 
   ##reading in precipitation data from 2016 specifying cell range
   janitor::clean_names() %>% 
@@ -120,7 +120,7 @@ In the 2016 dataset there are `r nrow(precipitation16_data)` observations and in
 
 ##Problem 3
 
-```{r}
+```{r, message = FALSE}
 devtools::install_github("p8105/p8105.datasets")
 library(p8105.datasets)
 data("brfss_smart2010")
@@ -154,7 +154,7 @@ brfss_data %>%
 
 In this dataset, there are `r count(distinct(brfss_data, locationdesc))` unique locations. Additionally, all states are represented. I know this by counting the number of values for locationabbr (`r brfss_data %>% distinct(locationabbr) %>% count()`), which includes the 50 states and Washington D.C. The most observed state was `r brfss_data %>% count(locationabbr) %>% arrange(desc(n)) %>% select(locationabbr) %>% head(1)`. The median of the "Excellent" response value was `r brfss_data %>% filter(year == "2002", !is.na(excellent)) %>% summarize(median(excellent))`, in 2002.
 
-```{r}
+```{r, message = FALSE}
 brfss_data %>% 
   filter(year == "2002", !is.na(excellent)) %>% 
   ggplot(aes(x = excellent)) + geom_histogram(binwidth = 0.5) +
@@ -167,7 +167,7 @@ brfss_data %>%
   ##creating histogram reflecting excellent response values in 2002
 ```
 
-```{r}
+```{r, message = FALSE}
 brfss_data %>% 
   filter(locationdesc == "NY - Queens County" | locationdesc == "NY - New York County") %>% 
   ggplot(aes(x = year, y = excellent, color = locationdesc)) + geom_point() +
