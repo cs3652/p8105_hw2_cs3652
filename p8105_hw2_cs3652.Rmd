@@ -74,32 +74,49 @@ trashwheel_data %>%
   summarize(median(sports_balls))
 ```
 
+The Mr. Trash Wheel dataset has `r nrow(trashwheel_data)` observations. In 2016, the median number of sports balls in the trash was `r trashwheel_data %>% filter(year == "2016") %>% summarise(median(sports_balls))`.
+
 ```{r}
 precipitation16_data = readxl::read_excel("./HealthyHarborWaterWheelTotals2018-7-28.xlsx", "2016 Precipitation", range = cellranger::cell_cols("A:B")) %>% 
+  ##reading in precipitation data from 2016 specifying cell range
   janitor::clean_names() %>% 
+  ##cleaning names into lowercase snake
   filter(!is.na(precipitation_in) & precipitation_in != ("Month")) %>% 
+  ##removing rows without precipitation
   add_column(year = "2016") %>% 
+  ##creating variable called year
   rename(month = precipitation_in) %>% 
+  ##renaming precipitation_in
   rename(rainfall_in = x_1) %>% 
+  ##renaming x_1
   mutate(rainfall_in = as.numeric(rainfall_in))
 
 precipitation17_data = readxl::read_excel("./HealthyHarborWaterWheelTotals2018-7-28.xlsx", "2017 Precipitation", range = cellranger::cell_cols("A:B")) %>% 
+  ##reading in precipitation data from 2017 specifying cell range
   janitor::clean_names() %>% 
+  ##cleaning names into lowercase snake
   filter(!is.na(precipitation_in) & !is.na(x_1) & precipitation_in != ("Month")) %>% 
+  ##removing rows without precipitation
   add_column(year = "2017") %>% 
-  rename(month = precipitation_in) %>% 
+  ##creating variable called year
+  rename(month = precipitation_in) %>%
+  ##renaming precipitation_in
   rename(rainfall_in = x_1) %>% 
+  ##renaming x_1
   mutate(rainfall_in = as.numeric(rainfall_in))
 
 precipitation17_data %>% 
   select(rainfall_in) %>% 
   sum()
+  ##finding total precipitation in 2017
 
-precipitation_16_17_data = bind_rows(precipitation16_data, precipitation17_data) %>% 
+precipitation_new_data = bind_rows(precipitation16_data, precipitation17_data) %>% 
+  ##combining datasets
   mutate(month = month.name[as.integer(month)])
+  ##converting month to a character variable
 ```
 
-The Mr. Trash Wheel dataset has `r nrow(trashwheel_data)` observations. In 2016, the median number of sports balls in the trash was `r trashwheel_data %>% filter(year == "2016") %>% summarise(median(sports_balls))`.
+In the 2016 dataset there are `r nrow(precipitation16_data)` observations and in the 2017 dataset there are `r nrow(precipitation17_data)` observations. Key variables include the month, year and rainfall_in variables. Using these variables we can clearly see the amount of precipitation in each month of 2016 and 2017. The total precipitation for 2017 was `r precipitation17_data %>% select(rainfall_in) %>% sum()` inches.
 
-
+##Problem 3
 
